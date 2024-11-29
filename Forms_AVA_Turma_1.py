@@ -94,15 +94,14 @@ if check_password():
 
         text_2 = st.selectbox("Motivo da Mensagem:", options=['Resposta a uma campanha', 'Resposta a uma parça', 'Contato por conta própria', 'Registro de disparo'])
         text_3 = st.selectbox("Campanha atrelada:", options=['Não', 'Campanha 1', 'Campanha 2', 'Campanha 3', 'Campanha 4'])
-        frequentou_aula = st.selectbox("Frequentou aula presencial?", options=['Sim', 'Não'])
+        frequentou_aula = st.selectbox("Já acessou o AVA?", options=['Sim', 'Não'])
 
         if frequentou_aula == 'Sim':
             quantas_vezes = st.selectbox("Quantas vezes?", options=[' ', '1x', '2x', '3x ou mais'])
 
         text_6 = st.selectbox("Comentários:", options=["Dúvidas sobre o curso", " Dúvidas sobre a gamificação", "Dúvidas e comentários sobre as aulas", "Problemas de cadastro", "Dificuldades financeiras", "Problemas pessoais ou de saúde"])
         
-        text_8 = st.text_input("Observações do atendimento:")
-        text_7 = st.text_input("Detalhes sobre o Aluno:")
+        text_8 = st.text_input("Detalhes do atendimento:")
         text_9 = st.text_input("Precisa encaminhar esse caso?", help="Este campo é obrigatório para submissão.")
         
         if not text_9: 
@@ -124,8 +123,7 @@ if check_password():
                     'Frequentou aula presencial?': frequentou_aula,
                     'Quantas vezes?': quantas_vezes if frequentou_aula == 'Sim' else '',
                     'Comentários': text_6,
-                    'Detalhes do Aluno': text_7,
-                    'Observações do atendimento': text_8,
+                    'Detalhes do atendimento:': text_8,
                     'Precisa encaminhar esse caso?': text_9,  
                     'Quem atendeu?': st.session_state.username,  
                     'extract_at' : (datetime.now() - timedelta(hours=3)).strftime("%Y-%m-%d %H:%M:%S")
