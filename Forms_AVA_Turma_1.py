@@ -59,6 +59,7 @@ def check_password():
             st.session_state.authenticated = True
             st.session_state.username = username  
             st.success(f"Você está logada(o) como {username}")
+            st.dataframe(df1)
             return True
         else:
             st.error("Nome ou Senha incorretos")
