@@ -34,6 +34,7 @@ df2 = conn1.read(
     ttl="10m"
 )
 
+df1['CPF_ALUNO'] = df1['CPF_ALUNO'].apply(lambda x: str(int(x)) if isinstance(x, float) and not pd.isna(x) else str(x)).str.strip()
 
 def formatar_nome(nome):
     partes = nome.split()
