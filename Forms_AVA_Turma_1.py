@@ -84,7 +84,7 @@ if check_password():
             if not user_info.empty:
                 st.write("Informações do aluno com CPF:", cpf_input)
                 st.markdown("- Nome: " + formatar_nome(user_info['Nome do Aluno'].values[0]))
-                st.markdown("- Já frequentou aula presencial? Se sim, qual? " + user_info['Já frenquentou alguma aula presencial? Se sim, qual?'].values[0])
+                st.markdown("- Já frequentou aula presencial? Se sim, qual? " + user_info['Já frequentou aula presencial? Se sim, qual?'].values[0])
                 st.session_state.user_info = user_info  # Atualizar o estado com as informações do aluno
             else:
                 st.write("Nenhum aluno encontrado com o CPF:", cpf_input)
