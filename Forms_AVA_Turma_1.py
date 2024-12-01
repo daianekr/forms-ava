@@ -136,7 +136,7 @@ if check_password():
                         df2 = df2._append(new_row, ignore_index=True)
 
                         conn2.update(
-                            worksheet="respostas",
+                            worksheet="respostas-turma1-ava",
                             data=df2
                         )
                         st.cache_data.clear()
