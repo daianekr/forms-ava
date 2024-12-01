@@ -22,15 +22,16 @@ st.set_page_config(
     }
 )
 
-conn1 = st.connection("gsheets1", type=GSheetsConnection)
+conn2 = st.connection("gsheets2", type=GSheetsConnection)
 
-df1 = conn1.read(
-    worksheet="dados-brutos",
+
+df1 = conn2.read(
+    worksheet="turma1-ava",
     ttl="10m"
 )
 
-df2 = conn1.read(
-    worksheet="respostas",
+df2 = conn2.read(
+    worksheet="respostas-turma1-ava",
     ttl="10m"
 )
 
@@ -110,34 +111,38 @@ if check_password():
         if st.form_submit_button("Submeter Resposta"):
             if st.session_state.user_info is None:  # Verificar se as informações estão disponíveis
                 st.error("Nenhuma informação de CPF encontrada. Verifique antes de submeter.")
-        elif not text_9: 
-            st.error("Por favor, preencha o campo 'Precisa encaminhar esse caso?' para submeter o formulário.")
+        # elif not text_9: 
+        #     st.error("Por favor, preencha o campo 'Precisa encaminhar esse caso?' para submeter o formulário.")
         else:
             with st.spinner('Gravando dados, por favor aguarde...'):
-                user_info = st.session_state.user_info  # Informações do aluno já verificadas
-            
-                new_row = {
-                    'Nome': formatar_nome(user_info['Nome do Aluno'].values[0]),
-                    'CPF': user_info['CPF_ALUNO'].values[0],
-                    'Motivo da Mensagem:': text_2,
-                    'Campanha atrelada:': text_3,
-                    'Frequentou aula presencial?': frequentou_aula,
-                    'Quantas vezes?': quantas_vezes if frequentou_aula == 'Sim' else '',
-                    'Comentários': text_6,
-                    'Detalhes do atendimento:': text_8,
-                    'Precisa encaminhar esse caso?': text_9,  
-                    'Quem atendeu?': st.session_state.username,  
-                    'extract_at' : (datetime.now() - timedelta(hours=3)).strftime("%Y-%m-%d %H:%M:%S")
-                }
-            
-                df2 = df2._append(new_row, ignore_index=True)
+                if st.session_state.user_info is not None:
+                        user_info = st.session_state.user_info
 
-                conn1.update(
-                    worksheet="respostas",
-                    data=df2
-                )
-                st.cache_data.clear()
-                st.rerun()
-                st.success("Informações atualizadas com sucesso!")
+
+                        new_row = {
+                            'Nome': formatar_nome(user_info['Nome do Aluno'].values[0]),
+                            'CPF': user_info['CPF_ALUNO'].values[0],
+                            'Motivo da Mensagem:': text_2,
+                            'Campanha atrelada:': text_3,
+                            'Frequentou aula presencial?': frequentou_aula,
+                            'Quantas vezes?': quantas_vezes if frequentou_aula == 'Sim' else '',
+                            'Comentários': text_6,
+                            'Detalhes do atendimento:': text_8,
+                            'Precisa encaminhar esse caso?': text_9,  
+                            'Quem atendeu?': st.session_state.username,  
+                            'extract_at' : (datetime.now() - timedelta(hours=3)).strftime("%Y-%m-%d %H:%M:%S")
+                        }
+                    
+                        df2 = df2._append(new_row, ignore_index=True)
+
+                        conn2.update(
+                            worksheet="respostas",
+                            data=df2
+                        )
+                        st.cache_data.clear()
+                        st.rerun()
+                        st.success("Informações atualizadas com sucesso!")
+                else:
+                    st.error("Nenhuma informação de CPF encontrada. Verifique antes de submeter.")
 else:
     st.write("Por favor, faça login para acessar o app teste.")
