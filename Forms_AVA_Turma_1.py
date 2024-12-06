@@ -9,6 +9,7 @@ import plotly.express as px
 from datetime import datetime, timedelta
 import random
 import string
+import time
 
 USER_CREDENTIALS = st.secrets["USER_CREDENTIALS"]
 
@@ -149,7 +150,8 @@ if check_password():
                         )
 
                         st.write("Atualizando Google Sheets...")  
-                        st.success("Informações atualizadas com sucesso!")
+                        st.toast("Informações atualizadas com sucesso!", duration=5)
+                        time.sleep(5)
                         st.session_state.pop("user_info", None)
                         st.cache_data.clear()
                         st.rerun()
