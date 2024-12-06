@@ -93,9 +93,9 @@ if check_password():
             user_info = df1[df1['CPF_ALUNO'] == cpf_input] 
 
             if not user_info.empty:
-                st.write("Informações do aluno com CPF:", cpf_input)
-                st.markdown("**- Nome:** " + formatar_nome(user_info['Nome do Aluno'].values[0]))
-                st.markdown("**- Já frequentou aula presencial? Se sim, qual?** " + user_info['Já frequentou aula presencial? Se sim, qual?'].values[0])
+                st.write("**Informações do aluno com CPF:**", cpf_input)
+                st.markdown("** - Nome:** " + formatar_nome(user_info['Nome do Aluno'].values[0]))
+                st.markdown("** - Já frequentou aula presencial? Se sim, qual?** " + user_info['Já frequentou aula presencial? Se sim, qual?'].values[0])
                 st.session_state.user_info = user_info  
             else:
                 st.write("Nenhum aluno encontrado com o CPF:", cpf_input)
