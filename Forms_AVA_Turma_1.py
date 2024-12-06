@@ -140,7 +140,7 @@ if check_password():
                             'extract_at': (datetime.now() - timedelta(hours=3)).strftime("%Y-%m-%d %H:%M:%S")
                         }
 
-                        st.write("Novo registro criado:")  
+                        st.write("Novo registro criado!")  
 
                         df2 = df2._append(new_row, ignore_index=True)
                         conn2.update(
@@ -149,10 +149,10 @@ if check_password():
                         )
 
                         st.write("Atualizando Google Sheets...")  
-                        st.cache_data.clear()
-                        st.rerun()
                         st.success("Informações atualizadas com sucesso!")
                         st.session_state.pop("user_info", None)
+                        st.cache_data.clear()
+                        st.rerun()
 
                     except Exception as e:
                         st.error(f"Erro ao gravar os dados: {e}")
