@@ -85,7 +85,7 @@ if check_password():
         st.session_state.user_info = None
 
     with st.form("meu_forms"):
-        st.markdown("### Formulário de checagem de informações dos alunos")
+        st.markdown("### Confira as informações dos alunos:")
         cpf_input = st.text_input("Digite o CPF:")
         submitted = st.form_submit_button("Confirma")
 
@@ -102,7 +102,7 @@ if check_password():
                 st.session_state.user_info = None  
 
     with st.form("meu_forms2", clear_on_submit=True):
-        st.markdown("### Formulário para escrever as informações de atendimento dos alunos")
+        st.markdown("### Insira as informações de atendimento:")
 
         text_2 = st.selectbox("Motivo da Mensagem:", options=['Resposta a uma campanha', 'Resposta a uma parça', 'Contato por conta própria', 'Registro de disparo'])
         text_3 = st.selectbox("Campanha atrelada:", options=['Não', 'Campanha 1', 'Campanha 2', 'Campanha 3', 'Campanha 4'])
