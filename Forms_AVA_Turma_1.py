@@ -142,10 +142,10 @@ if check_password():
 
                         st.write("Novo registro criado:")  
 
-                        new_row_df = pd.DataFrame([new_row])
+                        df2 = df2._append(new_row, ignore_index=True)
                         conn2.update(
                             worksheet="respostas-turma1-ava",
-                            data=new_row_df
+                            data=df2
                         )
 
                         st.write("Atualizando Google Sheets...")  
