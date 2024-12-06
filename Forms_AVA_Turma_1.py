@@ -140,7 +140,7 @@ if check_password():
                             'extract_at': (datetime.now() - timedelta(hours=3)).strftime("%Y-%m-%d %H:%M:%S")
                         }
 
-                        st.write("Novo registro criado:", new_row)  
+                        st.write("Novo registro criado:")  
 
                         new_row_df = pd.DataFrame([new_row])
                         conn2.update(
