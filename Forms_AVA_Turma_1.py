@@ -149,6 +149,8 @@ if check_password():
                         )
 
                         st.write("Atualizando Google Sheets...")  
+                        st.cache_data.clear()
+                        st.rerun()
                         st.success("Informações atualizadas com sucesso!")
                         st.session_state.pop("user_info", None)
 
