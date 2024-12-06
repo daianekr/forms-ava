@@ -23,17 +23,26 @@ st.set_page_config(
 )
 
 conn2 = st.connection("gsheets2", type=GSheetsConnection)
+@st.cache_data(ttl=600)
+def get_data(worksheet_name):
+    return conn2.read(worksheet=worksheet_name, ttl="10m")
+
+df1 = get_data("turma1-ava")
+df2 = get_data("respostas-turma1-ava")
 
 
-df1 = conn2.read(
-    worksheet="turma1-ava",
-    ttl="10m"
-)
+# conn2 = st.connection("gsheets2", type=GSheetsConnection)
 
-df2 = conn2.read(
-    worksheet="respostas-turma1-ava",
-    ttl="10m"
-)
+
+# df1 = conn2.read(
+#     worksheet="turma1-ava",
+#     ttl="10m"
+# )
+
+# df2 = conn2.read(
+#     worksheet="respostas-turma1-ava",
+#     ttl="10m"
+# )
 
 df1['CPF_ALUNO'] = df1['CPF_ALUNO'].apply(lambda x: str(int(x)) if isinstance(x, float) and not pd.isna(x) else str(x)).str.strip()
 
@@ -86,10 +95,10 @@ if check_password():
                 st.write("Informações do aluno com CPF:", cpf_input)
                 st.markdown("- Nome: " + formatar_nome(user_info['Nome do Aluno'].values[0]))
                 st.markdown("- Já frequentou aula presencial? Se sim, qual? " + user_info['Já frequentou aula presencial? Se sim, qual?'].values[0])
-                st.session_state.user_info = user_info  # Atualizar o estado com as informações do aluno
+                st.session_state.user_info = user_info  
             else:
                 st.write("Nenhum aluno encontrado com o CPF:", cpf_input)
-                st.session_state.user_info = None  # Garantir que o estado é resetado
+                st.session_state.user_info = None  
 
     with st.form("meu_forms2", clear_on_submit=True):
         st.write("Formulário para escrever as informações de atendimento dos alunos")
@@ -109,16 +118,17 @@ if check_password():
         if not text_9: 
             st.error("Por favor, preencha o campo 'Precisa encaminhar esse caso?'.")
         if st.form_submit_button("Submeter Resposta"):
-            if st.session_state.user_info is None:  # Verificar se as informações estão disponíveis
+            if st.session_state.user_info is None:
                 st.error("Nenhuma informação de CPF encontrada. Verifique antes de submeter.")
-        # elif not text_9: 
-        #     st.error("Por favor, preencha o campo 'Precisa encaminhar esse caso?' para submeter o formulário.")
-        else:
-            with st.spinner('Gravando dados, por favor aguarde...'):
-                if st.session_state.user_info is not None:
+            elif not text_9:
+                st.error("Por favor, preencha o campo 'Precisa encaminhar esse caso?'.")
+            else:
+                st.write("Preparando dados para salvar...")  # Log inicial
+                with st.spinner('Gravando dados, por favor aguarde...'):
+                    try:
                         user_info = st.session_state.user_info
 
-
+                        # Cria o novo registro
                         new_row = {
                             'Nome': formatar_nome(user_info['Nome do Aluno'].values[0]),
                             'CPF': user_info['CPF_ALUNO'].values[0],
@@ -128,21 +138,30 @@ if check_password():
                             'Quantas vezes?': quantas_vezes if frequentou_aula == 'Sim' else '',
                             'Comentários': text_6,
                             'Detalhes do atendimento:': text_8,
-                            'Precisa encaminhar esse caso?': text_9,  
-                            'Quem atendeu?': st.session_state.username,  
-                            'extract_at' : (datetime.now() - timedelta(hours=3)).strftime("%Y-%m-%d %H:%M:%S")
+                            'Precisa encaminhar esse caso?': text_9,
+                            'Quem atendeu?': st.session_state.username,
+                            'extract_at': (datetime.now() - timedelta(hours=3)).strftime("%Y-%m-%d %H:%M:%S")
                         }
-                    
-                        df2 = df2._append(new_row, ignore_index=True)
 
+                        st.write("Novo registro criado:", new_row)  # Log do novo registro
+
+                        # Atualiza diretamente o Google Sheets
+                        new_row_df = pd.DataFrame([new_row])
+                        updated_df = pd.concat([df2, new_row_df], ignore_index=True)
+
+                        st.write("Atualizando Google Sheets...")  # Log de atualização
+
+                        # Salva no Google Sheets
                         conn2.update(
                             worksheet="respostas-turma1-ava",
-                            data=df2
+                            data=updated_df
                         )
-                        st.cache_data.clear()
-                        st.rerun()
+
                         st.success("Informações atualizadas com sucesso!")
-                else:
-                    st.error("Nenhuma informação de CPF encontrada. Verifique antes de submeter.")
+
+                    except Exception as e:
+                        st.error(f"Erro ao gravar os dados: {e}")
+                        st.write("Erro detalhado:", e)
+
 else:
     st.write("Por favor, faça login para acessar o app teste.")
