@@ -16,7 +16,7 @@ USER_CREDENTIALS = st.secrets["USER_CREDENTIALS"]
 st.set_page_config(
     page_title="Mobilize<>Ifood",
     page_icon="📑",
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
         'About': "# Formulário das Parças do Programa *Meu Diploma*"
@@ -79,7 +79,7 @@ def check_password():
 if check_password():
 
     st.title("Formulário das Parças")
-    st.markdown("### Preenchimento dos dados dos alunos matriculados no AVA da Turma 1. ")
+    st.markdown("Preenchimento dos dados dos alunos matriculados no AVA da Turma 1. ")
 
     if 'user_info' not in st.session_state:
         st.session_state.user_info = None
