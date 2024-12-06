@@ -85,7 +85,7 @@ if check_password():
         st.session_state.user_info = None
 
     with st.form("meu_forms"):
-        st.write("Formulário de checagem de informações dos alunos")
+        st.markdown("### Formulário de checagem de informações dos alunos")
         cpf_input = st.text_input("Digite o CPF:")
         submitted = st.form_submit_button("Confirma")
 
@@ -94,15 +94,15 @@ if check_password():
 
             if not user_info.empty:
                 st.write("Informações do aluno com CPF:", cpf_input)
-                st.markdown("- Nome: " + formatar_nome(user_info['Nome do Aluno'].values[0]))
-                st.markdown("- Já frequentou aula presencial? Se sim, qual? " + user_info['Já frequentou aula presencial? Se sim, qual?'].values[0])
+                st.markdown("**- Nome:** " + formatar_nome(user_info['Nome do Aluno'].values[0]))
+                st.markdown("**- Já frequentou aula presencial? Se sim, qual?** " + user_info['Já frequentou aula presencial? Se sim, qual?'].values[0])
                 st.session_state.user_info = user_info  
             else:
                 st.write("Nenhum aluno encontrado com o CPF:", cpf_input)
                 st.session_state.user_info = None  
 
     with st.form("meu_forms2", clear_on_submit=True):
-        st.write("Formulário para escrever as informações de atendimento dos alunos")
+        st.markdown("### Formulário para escrever as informações de atendimento dos alunos")
 
         text_2 = st.selectbox("Motivo da Mensagem:", options=['Resposta a uma campanha', 'Resposta a uma parça', 'Contato por conta própria', 'Registro de disparo'])
         text_3 = st.selectbox("Campanha atrelada:", options=['Não', 'Campanha 1', 'Campanha 2', 'Campanha 3', 'Campanha 4'])
