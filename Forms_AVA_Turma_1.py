@@ -69,7 +69,6 @@ def check_password():
             st.session_state.authenticated = True
             st.session_state.username = username  
             st.success(f"Você está logada(o) como {username}")
-            st.dataframe(df1)
             return True
         else:
             st.error("Nome ou Senha incorretos")
@@ -123,12 +122,10 @@ if check_password():
             elif not text_9:
                 st.error("Por favor, preencha o campo 'Precisa encaminhar esse caso?'.")
             else:
-                st.write("Preparando dados para salvar...")  # Log inicial
+                st.write("Preparando dados para salvar...") 
                 with st.spinner('Gravando dados, por favor aguarde...'):
                     try:
                         user_info = st.session_state.user_info
-
-                        # Cria o novo registro
                         new_row = {
                             'Nome': formatar_nome(user_info['Nome do Aluno'].values[0]),
                             'CPF': user_info['CPF_ALUNO'].values[0],
@@ -143,21 +140,17 @@ if check_password():
                             'extract_at': (datetime.now() - timedelta(hours=3)).strftime("%Y-%m-%d %H:%M:%S")
                         }
 
-                        st.write("Novo registro criado:", new_row)  # Log do novo registro
+                        st.write("Novo registro criado:", new_row)  
 
-                        # Atualiza diretamente o Google Sheets
                         new_row_df = pd.DataFrame([new_row])
-                        updated_df = pd.concat([df2, new_row_df], ignore_index=True)
-
-                        st.write("Atualizando Google Sheets...")  # Log de atualização
-
-                        # Salva no Google Sheets
                         conn2.update(
                             worksheet="respostas-turma1-ava",
-                            data=updated_df
+                            data=new_row_df
                         )
 
+                        st.write("Atualizando Google Sheets...")  
                         st.success("Informações atualizadas com sucesso!")
+                        st.session_state.pop("user_info", None)
 
                     except Exception as e:
                         st.error(f"Erro ao gravar os dados: {e}")
