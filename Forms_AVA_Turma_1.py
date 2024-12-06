@@ -162,4 +162,4 @@ if check_password():
                         st.write("Erro detalhado:", e)
 
 else:
-    st.write("Por favor, faça login para acessar o app teste.")
+    st.write("Por favor, faça login para acessar o App.")
