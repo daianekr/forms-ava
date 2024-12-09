@@ -151,7 +151,7 @@ if check_password():
                         )
 
                         st.write("Atualizando Google Sheets...")  
-                        st.toast("Informações atualizadas com sucesso!", duration=5)
+                        st.toast("Informações atualizadas com sucesso!", icon='✅')
                         time.sleep(5)
                         st.session_state.pop("user_info", None)
                         st.cache_data.clear()
