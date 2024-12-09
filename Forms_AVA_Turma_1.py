@@ -111,7 +111,7 @@ if check_password():
         if frequentou_aula == 'Sim':
             quantas_vezes = st.selectbox("Quantas vezes?", options=[' ', '1x', '2x', '3x ou mais'])
 
-        text_6 = st.selectbox("Comentários:", options=["Dúvidas sobre o curso", " Dúvidas sobre a gamificação", "Dúvidas e comentários sobre as aulas", "Problemas de cadastro", "Dificuldades financeiras", "Problemas pessoais ou de saúde"])
+        text_6 = st.selectbox("Comentários:", options=["Dificuldades de acesso", "Dúvidas pedagógicas", "Dúvidas sobre atividades", "Dúvidas sobre o programa", "Problemas pessoais", "Desistência"])
         
         text_8 = st.text_input("Detalhes do atendimento:")
         text_9 = st.text_input("Precisa encaminhar esse caso?", help="Este campo é obrigatório para submissão.")
